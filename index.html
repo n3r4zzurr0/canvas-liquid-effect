@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta charset="utf-8" />
+	<title>Canvas Liquid Effect</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/matter-js@0.18.0/build/matter.min.js"></script>
+	<script src="js/physics.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/canvas.js"></script>
+	<script src="js/filters.js"></script>
+	<style>
+	body {
+		margin: 0;
+		background: #000;
+		user-select: none;
+		-webkit-user-select: none;
+	}
+	canvas {
+		position: fixed;
+		top: 50%;
+		left: calc(50% + 180px);
+		height: 100vh;
+		transform: translate(-50%, -50%);
+	}
+	svg {
+		width: 0;
+		height: 0;
+	}
+	.title {
+		color: #fff;
+		position: fixed;
+		top: 50%;
+		left: calc(50% - 180px);
+		font-size: 30px;
+		font-family: 'Rubik Mono One', sans-serif;
+		letter-spacing: -1px;
+		white-space: nowrap;
+		transform: translate(-50%, -50%);
+	}
+	#static {
+		filter: url("#static-filter");
+		z-index: 0;
+	}
+	#particles {
+		filter: url("#particles-filter");
+		z-index: 1;
+	}
+	@media only screen and (max-width: 1024px) {
+		.title {
+			top: 30px;
+			left: auto;
+			right: 30px;
+			font-size: 24px;
+			text-align: right;
+			transform: translate(0, 0);
+		}
+		canvas {
+			left: 50%;
+			width: 100vw;
+			height: auto;
+		}
+	}
+	@media only screen and (max-width: 660px) {
+		.title {
+			font-size: 18px;
+		}
+	}
+	@media only screen and (max-height: 600px) {
+		.title {
+			font-size: 24px;
+		}
+	}
+	</style>
+</head>
+<body>
+	<div class="title">
+		Canvas Liquid Effect<br />
+		Matter.js + SVG Filters
+	</div>
+
+	<canvas id="static"></canvas>
+	<canvas id="particles"></canvas>
+
+	<svg xmlns="http://www.w3.org/2000/svg">
+		<defs>
+			<filter id="particles-filter">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+				<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 15 -4" result="goo" />
+			</filter>
+		</defs>
+	</svg>
+
+	<svg xmlns="http://www.w3.org/2000/svg">
+		<defs>
+			<filter id="static-filter">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+				<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 15 -6" result="goo" />
+				<feComposite in="SourceGraphic" in2="goo" operator="atop" />
+			</filter>
+		</defs>
+	</svg>
+
+	<script>
+	window.onload = () => {
+		Canvas.init();
+		Canvas.draw();
+		Filters.set();
+	};
+	</script>
+</body>
+</html>
