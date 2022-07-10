@@ -1,8 +1,9 @@
 const Filters = {
-
-  staticBlur: [2, 3, 4, 5, 6, 7, 7, 8, 9],
+  // Here, the values for standard deviations and color matrices
+  // are experimentally obtained for different canvas sizes
+  staticStdDeviation: [2, 3, 4, 5, 6, 7, 7, 8, 9],
   staticMatrix: ['6 -1', '8 -2', '10 -3', '12 -4', '15 -6', '18 -7', '18 -7', '21 -9', '27 -10'],
-  particlesBlur: [2, 2, 3, 4, 5, 6, 6, 8, 11],
+  particlesStdDeviation: [2, 2, 3, 4, 5, 6, 6, 8, 11],
   particlesMatrix: ['7 -2', '7 -3', '9 -3', '12 -3', '15 -4', '18 -6', '18 -6', '22 -9', '25 -12'],
 
   set: function () {
@@ -42,9 +43,9 @@ const Filters = {
       filterIndex = 8
     }
 
-    this.staticFilterBlur.setAttribute('stdDeviation', this.staticBlur[filterIndex])
+    this.staticFilterBlur.setAttribute('stdDeviation', this.staticStdDeviation[filterIndex])
     this.staticFilterMatrix.setAttribute('values', '1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 ' + this.staticMatrix[filterIndex])
-    this.particlesFilterBlur.setAttribute('stdDeviation', this.particlesBlur[filterIndex])
+    this.particlesFilterBlur.setAttribute('stdDeviation', this.particlesStdDeviation[filterIndex])
     this.particlesFilterMatrix.setAttribute('values', '1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 ' + this.particlesMatrix[filterIndex])
   }
 }

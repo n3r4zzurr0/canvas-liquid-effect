@@ -1,4 +1,7 @@
 const Canvas = {
+  // Colors for the particles to be set in sequential order
+  colors: ['#ffbf00', '#dc143c', '#8e2de2', '#2196f3', '#39ff14'],
+  colorIndex: -1,
 
   init: function () {
     this.staticCanvas = document.querySelector('#static')
@@ -11,21 +14,24 @@ const Canvas = {
     this.particlesContext.canvas.width = Config.canvasSize
     this.particlesContext.canvas.height = Config.canvasSize
 
+    // Initializing the Matter.js Physics Engine using a custom wrapper
+    // Matter.Bodies: https://brm.io/matter-js/docs/classes/Bodies.html
+    // Matter.Constraint: https://brm.io/matter-js/docs/classes/Constraint.html
     this.physics = Physics((Bodies, Constraint) => {
-      const cos = Math.cos(Config.slantRectAngle * Math.PI / 180)
-      const sin = Math.sin(Config.slantRectAngle * Math.PI / 180)
+      const COS = Math.cos(Config.slantRectAngle * Math.PI / 180)
+      const SIN = Math.sin(Config.slantRectAngle * Math.PI / 180)
 
       const leftVerticalRect = Bodies.rectangle(
-        this.staticCanvas.width / 2 - Config.slantRectDeltaX - Config.slantRectWidth * cos / 2,
-        this.staticCanvas.height / 2 - Config.slantRectDeltaY - Config.slantRectWidth * sin / 2 - Config.verticalRectHeight / 2,
+        this.staticCanvas.width / 2 - Config.slantRectDeltaX - Config.slantRectWidth * COS / 2,
+        this.staticCanvas.height / 2 - Config.slantRectDeltaY - Config.slantRectWidth * SIN / 2 - Config.verticalRectHeight / 2,
         Config.rectThickness,
         Config.verticalRectHeight,
         { isStatic: true }
       )
 
       const rightVerticalRect = Bodies.rectangle(
-        this.staticCanvas.width / 2 + Config.slantRectDeltaX + Config.slantRectWidth * cos / 2,
-        this.staticCanvas.height / 2 + Config.slantRectDeltaY - Config.slantRectWidth * sin / 2 - Config.verticalRectHeight / 2,
+        this.staticCanvas.width / 2 + Config.slantRectDeltaX + Config.slantRectWidth * COS / 2,
+        this.staticCanvas.height / 2 + Config.slantRectDeltaY - Config.slantRectWidth * SIN / 2 - Config.verticalRectHeight / 2,
         Config.rectThickness,
         Config.verticalRectHeight,
         { isStatic: true }
@@ -48,15 +54,15 @@ const Canvas = {
       )
 
       const largeCircle = Bodies.circle(
-        this.staticCanvas.width / 2 - Config.slantRectDeltaX + Config.slantRectWidth * cos / 2,
-        this.staticCanvas.height / 2 - Config.slantRectDeltaY + Config.slantRectWidth * sin / 2 - Config.largeCircleRadius + Config.rectThickness * sin,
+        this.staticCanvas.width / 2 - Config.slantRectDeltaX + Config.slantRectWidth * COS / 2,
+        this.staticCanvas.height / 2 - Config.slantRectDeltaY + Config.slantRectWidth * SIN / 2 - Config.largeCircleRadius + Config.rectThickness * SIN,
         Config.largeCircleRadius,
         { isStatic: true }
       )
 
       const turbine = Bodies.rectangle(
-        this.staticCanvas.width / 2 + Config.slantRectDeltaX - Config.slantRectWidth * cos / 4,
-        this.staticCanvas.height / 2 + Config.slantRectDeltaY + Config.slantRectWidth * sin / 4 - Config.verticalRectHeight / 2 + Config.rectThickness * sin,
+        this.staticCanvas.width / 2 + Config.slantRectDeltaX - Config.slantRectWidth * COS / 4,
+        this.staticCanvas.height / 2 + Config.slantRectDeltaY + Config.slantRectWidth * SIN / 4 - Config.verticalRectHeight / 2 + Config.rectThickness * SIN,
         Config.verticalRectHeight,
         Config.rectThickness,
         { friction: 0, restitution: 1, mass: 0.25, angle: 90 * Math.PI / 180 }
@@ -64,16 +70,16 @@ const Canvas = {
 
       const hinge = Constraint.create({
         pointA: {
-          x: this.staticCanvas.width / 2 + Config.slantRectDeltaX - Config.slantRectWidth * cos / 4,
-          y: this.staticCanvas.height / 2 + Config.slantRectDeltaY + Config.slantRectWidth * sin / 4 - Config.verticalRectHeight / 2 - Config.rectThickness * sin * 2
+          x: this.staticCanvas.width / 2 + Config.slantRectDeltaX - Config.slantRectWidth * COS / 4,
+          y: this.staticCanvas.height / 2 + Config.slantRectDeltaY + Config.slantRectWidth * SIN / 4 - Config.verticalRectHeight / 2 - Config.rectThickness * SIN * 2
         },
         bodyB: turbine,
         length: 0
       })
 
       const smallCircle = Bodies.circle(
-        this.staticCanvas.width / 2 + Config.slantRectDeltaX - (Config.slantRectWidth / 2 + Config.smallCircleDistance) * cos,
-        this.staticCanvas.height / 2 + Config.slantRectDeltaY + (Config.slantRectWidth / 2 + Config.smallCircleDistance) * sin,
+        this.staticCanvas.width / 2 + Config.slantRectDeltaX - (Config.slantRectWidth / 2 + Config.smallCircleDistance) * COS,
+        this.staticCanvas.height / 2 + Config.slantRectDeltaY + (Config.slantRectWidth / 2 + Config.smallCircleDistance) * SIN,
         Config.smallCircleRadius,
         { isStatic: true }
       )
@@ -92,11 +98,13 @@ const Canvas = {
 
     this.staticBodies = this.physics.initialBodies
     this.particles = []
-    this.fillParticles()
+    this.addParticles()
   },
 
-  fillParticles: function () {
-    const fillStyle = ['#dc143c', '#2196f3', '#ffbf00', '#39ff14', '#8e2de2'][~~(Math.random() * 5)]
+  addParticles: function () {
+    this.colorIndex++
+    if (this.colorIndex >= this.colors.length) { this.colorIndex = 0 }
+    const fillStyle = this.colors[this.colorIndex]
 
     for (let i = 0; i < Config.particleCount; i++) {
       this.physics.addBodies((Bodies) => {
@@ -148,12 +156,14 @@ const Canvas = {
       this.particlesContext.closePath()
       this.particlesContext.fill()
 
+      // Remove the particle when it goes off the visual viewport
       if (position.y > this.particlesCanvas.height + Config.particleRadius) {
         this.physics.removeBody(this.particles[i].body)
         this.particles.splice(i, 1)
         i--
       }
-      if (this.particles.length < Config.particleCount * 3 / 4) { this.fillParticles() }
+      // Initiate the next stream of particles when the current count is less than 75% of the initial count
+      if (this.particles.length < Config.particleCount * 0.75) { this.addParticles() }
     }
     window.requestAnimationFrame(() => { this.draw() })
   }

@@ -1,3 +1,4 @@
+// A custom wrapper function for initializing the Matter.js Physics Engine
 const Physics = (bodies) => {
   const Runner = Matter.Runner
   const Engine = Matter.Engine

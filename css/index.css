@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+  background: #000;
+  user-select: none;
+  -webkit-user-select: none;
+}
+canvas {
+  position: fixed;
+  top: 50%;
+  left: calc(50% + 180px);
+  height: 100vh;
+  transform: translate(-50%, -50%);
+}
+svg {
+  width: 0;
+  height: 0;
+}
+.controls {
+  position: fixed;
+  left: 24px;
+  top: 24px;
+}
+.controls .action {
+  position: relative;
+  margin: 12px 0;
+}
+.controls button {
+  cursor: pointer;
+  display: block;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #2a2b36;
+  transition: opacity .3s, background .3s, transform .3s;
+}
+.controls button svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+  transform: translate(-50%, -50%);
+}
+.controls .tooltip {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 54px;
+  top: 50%;
+  font-size: 14px;
+  padding: 6px 12px 7px;
+  white-space: nowrap;
+  color: #fff;
+  font-family: Poppins;
+  font-weight: 600;
+  border-radius: 6px;
+  background: #2a2b36;
+  transform: translate(0, -50%);
+  transition: opacity .3s;
+}
+.controls button:hover {
+  background: #353745;
+  transform: scale(1.14);
+}
+.controls button:hover + .tooltip {
+  opacity: 1;
+}
+.status {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+}
+.status .property {
+  display: table;
+  border-radius: 6px;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 9px 0;
+  background: #2a2b36;
+  color: #fff;
+  padding: 4px 9px;
+}
+.title {
+  color: #fff;
+  position: fixed;
+  top: 50%;
+  left: calc(50% - 180px);
+  font-size: 30px;
+  font-family: 'Rubik Mono One', sans-serif;
+  letter-spacing: -1px;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+#static {
+  filter: url("#static-filter");
+  z-index: 0;
+}
+#particles {
+  filter: url("#particles-filter");
+  z-index: 1;
+}
+@media only screen and (max-width: 1024px) {
+  .controls {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+  .status {
+    left: auto;
+    right: 24px;
+  }
+  .status .property {
+    margin: 9px 0 9px auto;
+  }
+  .title {
+    top: 30px;
+    left: auto;
+    right: 30px;
+    font-size: 24px;
+    text-align: right;
+    transform: translate(0, 0);
+  }
+  canvas {
+    left: 50%;
+    width: 100vw;
+    height: auto;
+  }
+}
+@media only screen and (max-width: 660px) {
+  .controls {
+    top: auto;
+    left: 18px;
+    bottom: 18px;
+    transform: translate(0, 0);
+  }
+  .title {
+    font-size: 18px;
+  }
+}
+@media only screen and (max-height: 600px) {
+  .title {
+    font-size: 24px;
+  }
+}
