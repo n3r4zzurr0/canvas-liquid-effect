@@ -17,7 +17,7 @@ const Controls = {
         case 0:
           button.onclick = () => {
             this.staticFilterToggle = !this.staticFilterToggle
-            this.staticCanvas.style.filter = this.staticFilterToggle ? '' : 'url()'
+            this.staticCanvas.style.filter = this.staticFilterToggle ? '' : 'none'
             button.style.opacity = this.staticFilterToggle ? '' : 0.3
             this.values[0].innerText = this.staticFilterToggle ? 'enabled' : 'disabled'
           }
@@ -25,7 +25,7 @@ const Controls = {
         case 1:
           button.onclick = () => {
             this.particlesFilterToggle = !this.particlesFilterToggle
-            this.particlesCanvas.style.filter = this.particlesFilterToggle ? '' : 'url()'
+            this.particlesCanvas.style.filter = this.particlesFilterToggle ? '' : 'none'
             button.style.opacity = this.particlesFilterToggle ? '' : 0.3
             this.values[1].innerText = this.particlesFilterToggle ? 'enabled' : 'disabled'
           }
