@@ -3,6 +3,7 @@
 Demonstration of liquid (or gooey) effect on HTML Canvas using [Matter.js](https://github.com/liabru/matter-js) and SVG filters ([`feGaussianBlur`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/feGaussianBlur) and [`feColorMatrix`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/feColorMatrix)).
 
 **[DEMO](https://n3r4zzurr0.in/canvas-liquid-effect)**
+
 [
 ![Canvas Liquid Effect](https://raw.githubusercontent.com/n3r4zzurr0/canvas-liquid-effect/main/static/liquid.gif)](https://n3r4zzurr0.in/canvas-liquid-effect)
 
