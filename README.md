@@ -9,7 +9,7 @@ Demonstration of liquid (or gooey) effect on HTML Canvas using [Matter.js](https
 
 <hr>
 
-**How?**
+## Liquid / Gooey Effect
 
 This effect is obtained by first applying the blur filter and then by increasing the contrast of the alpha channel by applying the color matrix filter. I have created a [pen](https://codepen.io/n3r4zzurr0/pen/oNEMzOa) which demonstrates the same.
 
