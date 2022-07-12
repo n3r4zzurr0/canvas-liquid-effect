@@ -17,6 +17,7 @@ svg {
 }
 .controls {
   position: fixed;
+  z-index: 2;
   left: 24px;
   top: 24px;
 }
