@@ -3,6 +3,10 @@ const Canvas = {
   colors: ['#ffbf00', '#dc143c', '#8e2de2', '#2196f3', '#39ff14'],
   colorIndex: -1,
 
+  // For calculating FPS
+  times: [],
+  fps: 0,
+
   init: function () {
     this.staticCanvas = document.querySelector('#static')
     this.particlesCanvas = document.querySelector('#particles')
@@ -13,6 +17,8 @@ const Canvas = {
     this.staticContext.canvas.height = Config.canvasSize
     this.particlesContext.canvas.width = Config.canvasSize
     this.particlesContext.canvas.height = Config.canvasSize
+
+    this.fpsCounter = document.querySelectorAll('.value')[3]
 
     // Initializing the Matter.js Physics Engine using a custom wrapper
     // Matter.Bodies: https://brm.io/matter-js/docs/classes/Bodies.html
@@ -165,6 +171,14 @@ const Canvas = {
       // Initiate the next stream of particles when the current count is less than 75% of the initial count
       if (this.particles.length < Config.particleCount * 0.75) { this.addParticles() }
     }
+
+    const now = performance.now()
+    while (this.times.length > 0 && this.times[0] <= now - 1000) { this.times.shift() }
+    this.times.push(now)
+    this.fps = this.times.length
+
+    this.fpsCounter.innerText = this.fps
+
     window.requestAnimationFrame(() => { this.draw() })
   }
 }
